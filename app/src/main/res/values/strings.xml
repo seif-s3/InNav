@@ -19,4 +19,6 @@
         <item>@drawable/ic_add_new_venue</item>
         <item>@drawable/ic_settings</item>
     </string-array>
+
+    <string name="hello_world">Hello world!</string>
 </resources>

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.innav.innav" >
+<manifest
+    package="com.innav.innav"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <application
         android:allowBackup="true"
@@ -21,12 +22,12 @@
             android:label="@string/title_activity_nearby_venues" >
         </activity>
         <activity
-            android:name=".CompassActivity"
-            android:label="@string/title_activity_compass" >
-        </activity>
-        <activity
             android:name=".SettingsActivity"
             android:label="@string/title_activity_settings" >
+        </activity>
+        <activity
+            android:name=".CompassActivity"
+            android:label="@string/title_activity_compass">
         </activity>
     </application>
 

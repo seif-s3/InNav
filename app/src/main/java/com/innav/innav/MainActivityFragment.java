@@ -2,10 +2,11 @@ package com.innav.innav;
 
 import android.content.Intent;
 import android.content.res.TypedArray;
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,7 +54,7 @@ public class MainActivityFragment extends Fragment
         navMenuIcons = getResources().obtainTypedArray(R.array.main_menu_icons);
         navMenuTitles = getResources().getStringArray(R.array.main_menu_items);
 
-        navDrawerItems = new ArrayList<MainMenuItem>();
+        navDrawerItems = new ArrayList<>();
         // TODO: Get number of Nearby Venues from server and add them dynamically here..
         navDrawerItems.add(new MainMenuItem(navMenuTitles[0], navMenuIcons.getResourceId(0, -1) ,true, "3" ));
         navDrawerItems.add(new MainMenuItem(navMenuTitles[1], navMenuIcons.getResourceId(1, -1) ));
@@ -70,12 +71,24 @@ public class MainActivityFragment extends Fragment
             {
                 Intent launchSelectedActivity = null;
                 if (position == 0)
+                {
                     launchSelectedActivity = new Intent(getActivity(), NearbyVenues.class);
+                }
                 else if (position == 1)
+                {
                     launchSelectedActivity = new Intent(getActivity(), CompassActivity.class);
+                }
                 else if (position == 3)
+                {
                     launchSelectedActivity = new Intent(getActivity(), SettingsActivity.class);
-                startActivity(launchSelectedActivity);
+                }
+                try
+                {
+                    startActivity(launchSelectedActivity);
+                } catch (Exception e)
+                {
+                    Log.e("MainMenuActivity", "Could not start Activity");
+                }
             }
         });
         return rootView;
