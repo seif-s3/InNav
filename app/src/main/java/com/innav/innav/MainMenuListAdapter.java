@@ -2,6 +2,7 @@ package com.innav.innav;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,13 +14,23 @@ import java.util.ArrayList;
 
 public class MainMenuListAdapter extends BaseAdapter
 {
-
+    private String[] navMenuTitles;
+    private TypedArray navMenuIcons;
     private Context context;
-    private ArrayList<MainMenuItem> MainMenuItems;
+    private ArrayList<MainMenuItem> MainMenuItems = new ArrayList<>();
 
-    public MainMenuListAdapter(Context context, ArrayList<MainMenuItem> MainMenuItems){
+    public MainMenuListAdapter(Context context, int numberOfNearbyVenues)
+    {
         this.context = context;
-        this.MainMenuItems = MainMenuItems;
+        navMenuIcons = context.getResources().obtainTypedArray(R.array.main_menu_icons);
+        navMenuTitles = context.getResources().getStringArray(R.array.main_menu_items);
+
+        MainMenuItems.add(new MainMenuItem(navMenuTitles[0], navMenuIcons.getResourceId(0, -1),
+                true, Integer.toString(numberOfNearbyVenues)));
+        MainMenuItems.add(new MainMenuItem(navMenuTitles[1], navMenuIcons.getResourceId(1, -1)));
+        MainMenuItems.add(new MainMenuItem(navMenuTitles[2], navMenuIcons.getResourceId(2, -1)));
+        MainMenuItems.add(new MainMenuItem(navMenuTitles[3], navMenuIcons.getResourceId(3, -1)));
+
     }
 
     @Override
@@ -46,7 +57,7 @@ public class MainMenuListAdapter extends BaseAdapter
         }
 
         ImageView imgIcon = (ImageView) convertView.findViewById(R.id.main_menu_item_icon);
-        TextView txtTitle = (TextView) convertView.findViewById(R.id.main_menu_item_title);
+        TextView txtTitle = (TextView) convertView.findViewById(R.id.main_menu_item_text);
         TextView txtCount = (TextView) convertView.findViewById(R.id.main_menu_item_counter);
 
         imgIcon.setImageResource(MainMenuItems.get(position).getIcon());

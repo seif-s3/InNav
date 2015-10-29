@@ -21,15 +21,18 @@
         </activity>
         <activity
             android:name=".NearbyVenues"
-            android:label="@string/title_activity_nearby_venues" >
+            android:label="@string/title_activity_nearby_venues"
+            android:parentActivityName=".MainActivity">
         </activity>
         <activity
             android:name=".SettingsActivity"
-            android:label="@string/title_activity_settings" >
+            android:label="@string/title_activity_settings"
+            android:parentActivityName=".MainActivity">
         </activity>
         <activity
             android:name=".CompassActivity"
-            android:label="@string/title_activity_compass">
+            android:label="@string/title_activity_compass"
+            android:parentActivityName=".MainActivity">
         </activity>
     </application>
 

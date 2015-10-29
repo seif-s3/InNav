@@ -26,4 +26,5 @@
     </string-array>
 
     <string name="hello_world">Hello world!</string>
+    <string name="default_venue_desc">Tap to open indoor map</string>
 </resources>

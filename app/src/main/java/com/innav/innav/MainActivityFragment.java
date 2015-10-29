@@ -1,7 +1,6 @@
 package com.innav.innav;
 
 import android.content.Intent;
-import android.content.res.TypedArray;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -13,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -30,8 +30,6 @@ import java.util.ArrayList;
  */
 public class MainActivityFragment extends Fragment
 {
-    private String[] navMenuTitles;
-    private TypedArray navMenuIcons;
 
     private ArrayList<MainMenuItem> navDrawerItems;
     private MainMenuListAdapter adapter;
@@ -74,23 +72,14 @@ public class MainActivityFragment extends Fragment
         final View rootView = inflater.inflate(R.layout.fragment_main, container, false);
         final ListView listView = (ListView)  rootView.findViewById(R.id.main_menu_list_view);
 
-        navMenuIcons = getResources().obtainTypedArray(R.array.main_menu_icons);
-        navMenuTitles = getResources().getStringArray(R.array.main_menu_items);
-
-        navDrawerItems = new ArrayList<>();
         // TODO: Move main menu creation to onStart method.
         // TODO: Create helper function for creating the main menu
         // TODO: Get number of Nearby Venues from server and add them dynamically here..
 
         getNumberOfNearbyVenues();
 
-        navDrawerItems.add(new MainMenuItem(navMenuTitles[0], navMenuIcons.getResourceId(0, -1), true, Integer.toString(numberOfNearbyVenuesIndicator.intValue())));
-        navDrawerItems.add(new MainMenuItem(navMenuTitles[1], navMenuIcons.getResourceId(1, -1) ));
-        navDrawerItems.add(new MainMenuItem(navMenuTitles[2], navMenuIcons.getResourceId(2, -1) ));
-        navDrawerItems.add(new MainMenuItem(navMenuTitles[3], navMenuIcons.getResourceId(3, -1)));
-
         //navMenuIcons.recycle();
-        adapter = new MainMenuListAdapter(getContext(), navDrawerItems);
+        adapter = new MainMenuListAdapter(getContext(), numberOfNearbyVenuesIndicator);
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener()
         {
@@ -105,6 +94,10 @@ public class MainActivityFragment extends Fragment
                 else if (position == 1)
                 {
                     launchSelectedActivity = new Intent(getActivity(), CompassActivity.class);
+                }
+                else if (position == 2)
+                {
+                    Toast.makeText(getContext(), "Visit our website to add Venue", Toast.LENGTH_SHORT).show();
                 }
                 else if (position == 3)
                 {
@@ -124,9 +117,11 @@ public class MainActivityFragment extends Fragment
 
     private void getNumberOfNearbyVenues()
     {
+        Log.v("Getting # Nearby Venues", "Starting");
         FetchNearbyVenuesTask f = new FetchNearbyVenuesTask();
         // TODO: Read lat and long from GPS and range from SharedPref
         f.execute("30", "31", "5");
+        Log.v("Getting # Nearby Venues", numberOfNearbyVenuesIndicator.toString());
     }
 
     public class FetchNearbyVenuesTask extends AsyncTask<String, Void, Integer>
@@ -138,11 +133,8 @@ public class MainActivityFragment extends Fragment
         {
             if (result != null)
             {
-                navDrawerItems.clear();
-                navDrawerItems.add(new MainMenuItem(navMenuTitles[0], navMenuIcons.getResourceId(0, -1), true, Integer.toString(numberOfNearbyVenuesIndicator.intValue())));
-                navDrawerItems.add(new MainMenuItem(navMenuTitles[1], navMenuIcons.getResourceId(1, -1)));
-                navDrawerItems.add(new MainMenuItem(navMenuTitles[2], navMenuIcons.getResourceId(2, -1)));
-                navDrawerItems.add(new MainMenuItem(navMenuTitles[3], navMenuIcons.getResourceId(3, -1)));
+                adapter = new MainMenuListAdapter(getContext(), result);
+                Log.v("onPostExecute", numberOfNearbyVenuesIndicator.toString());
             }
         }
 

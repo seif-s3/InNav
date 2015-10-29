@@ -50,7 +50,7 @@ public class NearbyVenuesFragment extends Fragment
         mNearbyVenuesAdapter = new ArrayAdapter<String>(
                 getActivity(),
                 R.layout.list_item_nearby_venue,
-                R.id.list_item_nearby_venue_textview,
+                R.id.nearby_venue_name_tv,
                 new ArrayList<String>());
 
         final ListView listView = (ListView) rootView.findViewById(R.id.list_view_nearby);
