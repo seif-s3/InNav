@@ -2,9 +2,14 @@
     <string name="app_name">InNav</string>
     <string name="nearby_venues_default">No nearby venues found.</string>
     <string name="action_settings">Settings</string>
-    <string name="title_activity_nearby_venues">NearbyVenues</string>
-    <string name="title_activity_compass">CompassActivity</string>
+    <string name="title_activity_nearby_venues">Nearby Venues</string>
+    <string name="title_activity_compass">Compass</string>
     <string name="compass_default">A compass goes here!</string>
+
+    <!-- Preferences Strings -->
+    <string name="pref_range_key">range</string>
+    <string name="pref_range_default">5</string>
+    <string name="pref_range_label">Max. Range to Scan for Nearby Venues</string>
 
     <string-array name="main_menu_items">
         <item>Nearby Venues</item>
