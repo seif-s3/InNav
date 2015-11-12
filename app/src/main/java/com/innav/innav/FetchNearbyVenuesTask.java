@@ -1,7 +1,12 @@
 package com.innav.innav;
 
+import android.content.ContentValues;
+import android.content.Context;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.util.Log;
+
+import com.innav.innav.data.VenueDBContract;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -13,12 +18,21 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Vector;
 
 
-public class ServerActionsHelper
+public class FetchNearbyVenuesTask extends AsyncTask<String, Void, Void>
 {
+    private final String LOG_TAG = FetchNearbyVenuesTask.class.getSimpleName();
+    private final Context mContext;
 
-    public static String[] requestNearbyVenuesFromServer(String... params)
+    public FetchNearbyVenuesTask(Context context)
+    {
+        mContext = context;
+    }
+
+    @Override
+    protected Void doInBackground(String... params)
     {
         final String LOG_TAG = "ServerConnection";
         // These two need to be declared outside the try/catch
@@ -27,24 +41,21 @@ public class ServerActionsHelper
         BufferedReader reader = null;
 
         // Will contain the raw JSON response as a string.
-        String forecastJsonStr = null;
-        String format = "json";
-        String units = params[1];
-        int numDays = 7;
+        String nearbyVenuesJsonStr = null;
+
 
         try
         {
-            final String BASE_URL = "http://api.openweathermap.org/data/2.5/forecast/daily?";
-            final String QUERY_PARAM = "q";
-            final String FORMAT_PARAM = "mode";
-            final String UNITS_PARAM = "units";
-            final String DAY_PARAM = "cnt";
+            final String BASE_URL = "https://limitless-depths-3645.herokuapp.com/places.json?";
+
+            final String LAT_PARAM = "lat";
+            final String LONG_PARAM = "long";
+            final String RANGE_PARAM = "range";
 
             Uri builtUri = Uri.parse(BASE_URL).buildUpon()
-                    .appendQueryParameter(QUERY_PARAM, params[0])
-                    .appendQueryParameter(FORMAT_PARAM, format)
-                    .appendQueryParameter(UNITS_PARAM, units)
-                    .appendQueryParameter(DAY_PARAM, Integer.toString(numDays))
+                    .appendQueryParameter(LAT_PARAM, params[0])
+                    .appendQueryParameter(LONG_PARAM, params[1])
+                    .appendQueryParameter(RANGE_PARAM, params[2])
                     .build();
             URL url = new URL(builtUri.toString());
             Log.v(LOG_TAG, "Built URL: " + url);
@@ -77,13 +88,14 @@ public class ServerActionsHelper
                 // Stream was empty.  No point in parsing.
                 return null;
             }
-            forecastJsonStr = buffer.toString();
-            Log.v(LOG_TAG, forecastJsonStr);
+            nearbyVenuesJsonStr = buffer.toString();
+            Log.v(LOG_TAG, nearbyVenuesJsonStr);
         } catch (IOException e)
         {
             Log.e(LOG_TAG, "Error ", e);
             // If the code didn't successfully get the weather data, there's no point in attemping
             // to parse it.
+            //Toast.makeText(mContext, "No Internet Connection", Toast.LENGTH_SHORT).show();
             return null;
         } finally
         {
@@ -104,7 +116,8 @@ public class ServerActionsHelper
         }
         try
         {
-            return getNearbyVenuesFromJson(forecastJsonStr);
+            getNearbyVenuesFromJson(nearbyVenuesJsonStr);
+            return null;
         } catch (JSONException e)
         {
             Log.e(LOG_TAG, e.getMessage(), e);
@@ -113,18 +126,41 @@ public class ServerActionsHelper
         return null;
     }
 
-    private static String[] getNearbyVenuesFromJson(String jsonStr) throws JSONException
+    private void getNearbyVenuesFromJson(String jsonStr) throws JSONException
     {
-        final String NEARBY_VENUES = "nearby";
-        JSONObject resultJson = new JSONObject(jsonStr);
-        JSONArray nearbyVenuesArray = resultJson.getJSONArray(NEARBY_VENUES);
+        final String VENUE_NAME_KEY = "name";
+        final String VENUE_ID_KEY = "id";
+        //JSONObject resultJson = new JSONObject(jsonStr);
+        JSONArray venuesArray = new JSONArray(jsonStr);
+        //String[] venueNames = new String[venuesArray.length()];
 
-        String[] results = new String[nearbyVenuesArray.length()];
-        for (int i = 0; i < nearbyVenuesArray.length(); i++)
+        Vector<ContentValues> cVVector = new Vector<>(venuesArray.length());
+        //Log.v("JSONResult", Integer.toString(jsonArray.length()));
+        try
         {
-            results[i] = nearbyVenuesArray.getString(i);
+            for (int i = 0; i < venuesArray.length(); i++)
+            {
+                ContentValues venueName = new ContentValues();
+                JSONObject venueDetails = venuesArray.getJSONObject(i);
+                venueName.put(VenueDBContract.VenuesEntry.COLUMN_ID, venueDetails.getString(VENUE_ID_KEY));
+                venueName.put(VenueDBContract.VenuesEntry.COLUMN_NAME, venueDetails.getString(VENUE_NAME_KEY));
+                cVVector.add(venueName);
+            }
+            int inserted = 0;
+            if (cVVector.size() > 0)
+            {
+                ContentValues[] cVArray = new ContentValues[cVVector.size()];
+                cVVector.toArray(cVArray);
+                inserted = mContext.getContentResolver().bulkInsert(VenueDBContract.VenuesEntry.CONTENT_URI, cVArray);
+                Log.d(LOG_TAG, "FetchNearbyVenuesTask completed " + inserted + " Inserted");
+            }
+            return;
+        } catch (JSONException e)
+        {
+            Log.e(LOG_TAG, e.getMessage(), e);
+            e.printStackTrace();
         }
-        return results;
     }
+
 
 }

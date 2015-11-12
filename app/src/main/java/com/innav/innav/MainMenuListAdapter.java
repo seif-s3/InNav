@@ -22,8 +22,8 @@ public class MainMenuListAdapter extends BaseAdapter
     public MainMenuListAdapter(Context context, int numberOfNearbyVenues)
     {
         this.context = context;
-        navMenuIcons = context.getResources().obtainTypedArray(R.array.main_menu_icons);
-        navMenuTitles = context.getResources().getStringArray(R.array.main_menu_items);
+        navMenuIcons = this.context.getResources().obtainTypedArray(R.array.main_menu_icons);
+        navMenuTitles = this.context.getResources().getStringArray(R.array.main_menu_items);
 
         MainMenuItems.add(new MainMenuItem(navMenuTitles[0], navMenuIcons.getResourceId(0, -1),
                 true, Integer.toString(numberOfNearbyVenues)));

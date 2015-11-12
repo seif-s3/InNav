@@ -1,5 +1,8 @@
 package com.innav.innav;
 
+import android.app.LoaderManager;
+import android.content.Loader;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -12,6 +15,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import com.innav.innav.data.VenueDBContract;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -28,9 +33,16 @@ import java.util.ArrayList;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class NearbyVenuesFragment extends Fragment
+public class NearbyVenuesFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>
 {
-
+    static final int COL_VENUE_ID = 0;
+    static final int COL_VENUE_NAME = 1;
+    private static final int VENUES_LOADER = 0;
+    private static final String[] VENUES_COLUMNS = {
+            VenueDBContract.VenuesEntry.TABLE_NAME + "." + VenueDBContract.VenuesEntry._ID,
+            VenueDBContract.VenuesEntry.COLUMN_NAME,
+            VenueDBContract.VenuesEntry.COLUMN_ID
+    };
     private ArrayAdapter<String> mNearbyVenuesAdapter;
     public NearbyVenuesFragment()
     {
@@ -78,6 +90,24 @@ public class NearbyVenuesFragment extends Fragment
         FetchNearbyVenuesTask f = new FetchNearbyVenuesTask();
         // TODO: Send GPS coordinates instead of dummy value
         f.execute("30", "31", "10");
+    }
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args)
+    {
+        return null;
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data)
+    {
+
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader)
+    {
+
     }
 
     public class FetchNearbyVenuesTask extends AsyncTask<String, Void, String[]>

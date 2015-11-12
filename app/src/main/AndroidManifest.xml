@@ -7,7 +7,7 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/maze_icon"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
@@ -34,6 +34,12 @@
             android:label="@string/title_activity_compass"
             android:parentActivityName=".MainActivity">
         </activity>
+
+        <provider
+            android:name=".data.VenueProvider"
+            android:authorities="com.innav.innav"
+            android:enabled="true"
+            android:exported="true"/>
     </application>
 
 </manifest>
