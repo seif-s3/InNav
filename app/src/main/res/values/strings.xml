@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">InNav</string>
+    <string name="app_name">MazeIn</string>
     <string name="nearby_venues_default">No nearby venues found.</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_nearby_venues">Nearby Venues</string>
@@ -26,4 +26,5 @@
     </string-array>
 
     <string name="hello_world">Hello world!</string>
+    <string name="default_venue_desc">Tap to open indoor map</string>
 </resources>
