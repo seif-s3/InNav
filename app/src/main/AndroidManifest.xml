@@ -35,6 +35,12 @@
             android:parentActivityName=".MainActivity">
         </activity>
 
+        <activity
+            android:name=".BasicActivity"
+            android:label="@string/title_basic_map"
+            android:parentActivityName=".NearbyVenues">
+        </activity>
+
         <provider
             android:name=".data.VenueProvider"
             android:authorities="com.innav.innav"

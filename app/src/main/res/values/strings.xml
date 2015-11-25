@@ -27,4 +27,6 @@
 
     <string name="hello_world">Hello world!</string>
     <string name="default_venue_desc">Tap to open indoor map</string>
+
+    <string name="title_basic_map">Indoor Map</string>
 </resources>

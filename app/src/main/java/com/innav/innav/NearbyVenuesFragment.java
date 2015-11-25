@@ -1,6 +1,7 @@
 package com.innav.innav;
 
 import android.app.LoaderManager;
+import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
@@ -14,7 +15,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.innav.innav.data.VenueDBContract;
 
@@ -73,11 +73,10 @@ public class NearbyVenuesFragment extends Fragment implements LoaderManager.Load
             public void onItemClick(AdapterView<?> parent, View view, int position, long id)
             {
                 String venue = mNearbyVenuesAdapter.getItem(position);
-//                Intent launchDetailActivity = new Intent(getActivity(), DetailActivity.class)
-//                        .putExtra(Intent.EXTRA_TEXT, forecast);
-//                startActivity(launchDetailActivity);
-                Toast t = Toast.makeText(getContext(), "Map coming soon..", Toast.LENGTH_LONG);
-                t.show();
+                Intent launchMapActivity = new Intent(getActivity(), BasicActivity.class);
+                startActivity(launchMapActivity);
+                //Toast t = Toast.makeText(getContext(), "Map coming soon..", Toast.LENGTH_LONG);
+                //t.show();
                 // TODO: Launch Map Activity here
             }
         });
