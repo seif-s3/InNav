@@ -3,7 +3,13 @@
     package="com.innav.innav"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <uses-permission android:name="android.permission.BLUETOOTH"/>
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
+    <!-- Required for Android M to get WiFi scan results -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <!-- required to access Estimote Cloud -->
     <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 
     <application
         android:allowBackup="true"
@@ -33,6 +39,12 @@
             android:name=".CompassActivity"
             android:label="@string/title_activity_compass"
             android:parentActivityName=".MainActivity">
+        </activity>
+
+        <activity
+            android:name=".BasicActivity"
+            android:label="@string/title_basic_map"
+            android:parentActivityName=".NearbyVenues">
         </activity>
 
         <provider
