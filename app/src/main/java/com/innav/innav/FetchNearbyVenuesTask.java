@@ -46,7 +46,7 @@ public class FetchNearbyVenuesTask extends AsyncTask<String, Void, Void>
 
         try
         {
-            final String BASE_URL = "https://limitless-depths-3645.herokuapp.com/places.json?";
+            final String BASE_URL = "https://mazein.herokuapp.com/places.json?";
 
             final String LAT_PARAM = "lat";
             final String LONG_PARAM = "long";
