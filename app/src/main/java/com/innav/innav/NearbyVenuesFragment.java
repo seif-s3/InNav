@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.innav.innav.data.VenueDBContract;
 
@@ -72,12 +73,13 @@ public class NearbyVenuesFragment extends Fragment implements LoaderManager.Load
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id)
             {
+                // TODO: Add extra intent containing venue name to get map for different locations
                 String venue = mNearbyVenuesAdapter.getItem(position);
-                Intent launchMapActivity = new Intent(getActivity(), BasicActivity.class);
+                Intent launchMapActivity = new Intent(getActivity(), MapWebView.class);
+                launchMapActivity.putExtra("place_name", venue);
                 startActivity(launchMapActivity);
                 //Toast t = Toast.makeText(getContext(), "Map coming soon..", Toast.LENGTH_LONG);
                 //t.show();
-                // TODO: Launch Map Activity here
             }
         });
 
@@ -127,7 +129,14 @@ public class NearbyVenuesFragment extends Fragment implements LoaderManager.Load
             }
             else
             {
-                getView().findViewById(R.id.nearby_venues_text).setVisibility(View.VISIBLE);
+                if (result.length == 0)
+                {
+                    ((TextView) getView().findViewById(R.id.nearby_venues_text)).setText("No Venues Found.");
+                }
+                else
+                {
+                    getView().findViewById(R.id.nearby_venues_text).setVisibility(View.VISIBLE);
+                }
             }
 
         }
@@ -147,7 +156,7 @@ public class NearbyVenuesFragment extends Fragment implements LoaderManager.Load
 
             try
             {
-                final String BASE_URL = "https://limitless-depths-3645.herokuapp.com/places.json?";
+                final String BASE_URL = "https://mazein.herokuapp.com/places.json?";
 
                 final String LAT_PARAM = "lat";
                 final String LONG_PARAM = "long";
