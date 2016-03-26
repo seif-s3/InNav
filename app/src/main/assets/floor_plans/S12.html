@@ -77,20 +77,27 @@
 				redraw: 'moveend',
 		};
 		
-        var navIcon = L.icon({
+        // Icons used for labeling location points
+        var wiFiLocationIcon = L.icon({
             iconUrl: 'blue_button.png',
             iconSize:     [20, 20], // size of the icon
             //iconAnchor:   [22, 94], // point of the icon which will correspond to marker's location
             popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
         });
-		
 
-        var southWest = map.unproject([0, h], map.getMaxZoom()+1);
-        var northEast = map.unproject([w, 0], map.getMaxZoom()+1);
-        var bounds = new L.LatLngBounds(southWest, northEast);
+        var magneticLocationIcon = L.icon({
+            iconUrl: 'red_button.png',
+            iconSize:     [20, 20], // size of the icon
+            //iconAnchor:   [22, 94], // point of the icon which will correspond to marker's location
+            popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
+        });
+
+        //var southWest = map.unproject([0, h], map.getMaxZoom()+1);
+        //var northEast = map.unproject([w, 0], map.getMaxZoom()+1);
+        //var bounds = new L.LatLngBounds(southWest, northEast);
         
         //L.simpleGraticule(gridOptions).addTo(map);
-        var geoJsonData = {
+var geoJsonData = {
 "type": "FeatureCollection",
 
 "features": [
@@ -106,19 +113,38 @@
         map.on('zoomend', function(){
             $('#info').text("Zoom Level: " + map.getZoom());
         });
-		//map.on('mousemove', function(e){
-		//    $('#info').text(e.latlng);
-		//s});
+		map.on('mousemove', function(e){
+		    $('#info').text(e.latlng);
+		});
+
+
+		var wiFiLocation = L.marker([0,0], {icon: wiFiLocationIcon}).addTo(map);
+        var magLocation = L.marker([0,0], {icon: magneticLocationIcon}).addTo(map);
+
+        wiFiLocation.addTo(map);
+        magLocation.addTo(map);
+
         map.on('click', function(e){
             // Normalize coordinates to nearest 1
 			var normalizedLat = Math.floor(e.latlng.lat/5)*5;
 			var normalizedLng = Math.floor(e.latlng.lng/5)*5;
 			
-           $("#info").text(normalizedLat + "," + normalizedLng);
            // Initialize WiFi Scan parameters:
            // place_id, lat, long
            Android.initializeWifiScan("2", normalizedLat, normalizedLng);
+           Android.initializeMagneticScan("2", normalizedLat, normalizedLng);
            //L.marker(new L.LatLng(normalizedLat + 2.5, normalizedLng + 2.5), {icon: navIcon}).addTo(map);
+           <!--var wifi_lat = wiFiLocation.getLatLng().lat;-->
+           <!--var wifi_lng = wiFiLocation.getLatLng().lng;-->
+           <!--var mag_lat = magLocation.getLatLng().lat;-->
+           <!--var mag_lng = magLocation.getLatLng().lng;-->
+
+           <!--var wiFi_dist = Math.sqrt((wifi_lat-14)*(wifi_lat-14) + (wifi_lng-42)*(wifi_lng-42));-->
+           <!--var mag_dist = Math.sqrt((mag_lat-14)*(mag_lat-14) + (mag_lng-42)*(mag_lng-42));-->
+
+           <!--$("#info").text("WiFi dist: " + wiFi_dist + '\n' + "Mag dist: " + mag_dist);-->
+
+
         });
 
 

@@ -33,6 +33,17 @@ public class MainMenuListAdapter extends BaseAdapter
 
     }
 
+    public void updateNearbyVenuesNumber(Integer numNear)
+    {
+        MainMenuItems.clear();
+        MainMenuItems.add(new MainMenuItem(navMenuTitles[0], navMenuIcons.getResourceId(0, -1),
+                true, numNear.toString()));
+        MainMenuItems.add(new MainMenuItem(navMenuTitles[1], navMenuIcons.getResourceId(1, -1)));
+        MainMenuItems.add(new MainMenuItem(navMenuTitles[2], navMenuIcons.getResourceId(2, -1)));
+        //MainMenuItems.add(new MainMenuItem(navMenuTitles[3], navMenuIcons.getResourceId(3, -1)));
+
+    }
+
     @Override
     public int getCount() {
         return MainMenuItems.size();

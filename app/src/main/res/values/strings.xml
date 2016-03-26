@@ -29,4 +29,6 @@
     <string name="default_venue_desc">Tap to open indoor map</string>
 
     <string name="title_basic_map">Indoor Map</string>
+
+    <string name="localize_menu_text">Localize</string>
 </resources>

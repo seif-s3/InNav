@@ -73,7 +73,6 @@ public class NearbyVenuesFragment extends Fragment implements LoaderManager.Load
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id)
             {
-                // TODO: Add extra intent containing venue name to get map for different locations
                 String venue = mNearbyVenuesAdapter.getItem(position);
                 Intent launchMapActivity = new Intent(getActivity(), MapWebView.class);
                 launchMapActivity.putExtra("place_name", venue);
@@ -169,7 +168,6 @@ public class NearbyVenuesFragment extends Fragment implements LoaderManager.Load
                         .build();
                 URL url = new URL(builtUri.toString());
                 Log.v(LOG_TAG, "Built URL: " + url);
-                // Create the request to OpenWeatherMap, and open the connection
                 urlConnection = (HttpURLConnection) url.openConnection();
                 urlConnection.setRequestMethod("GET");
                 urlConnection.connect();

@@ -151,7 +151,7 @@ public class FetchNearbyVenuesTask extends AsyncTask<String, Void, Void>
             {
                 ContentValues[] cVArray = new ContentValues[cVVector.size()];
                 cVVector.toArray(cVArray);
-                inserted = mContext.getContentResolver().bulkInsert(VenueDBContract.VenuesEntry.CONTENT_URI, cVArray);
+//                inserted = mContext.getContentResolver().bulkInsert(VenueDBContract.VenuesEntry.CONTENT_URI, cVArray);
                 Log.d(LOG_TAG, "FetchNearbyVenuesTask completed " + inserted + " Inserted");
             }
             return;
